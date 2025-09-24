@@ -1,0 +1,136 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class AbstractFlyingObject
+{
+    # locationX:int
+    # locationY:int
+    # speedX:int
+    # speedY:int
+    # image:BufferedImage
+    # width:int
+    # height:int
+    # isValid:boolean
+
+    + AbstractFlyingObject(int locationX, int locationY, int speedX, int speedY)
+    + forward():void
+    + crash(AbstractFlyingObject flyingObject):boolean
+    + setLocation(double locationX, double locationY):void
+    + getLocationX():int
+    + getLocationY():int
+    + getSpeedY():int
+    + getImage():BufferedImage
+    + getWidth():int
+    + getHeight():int
+    + notValid():boolean
+    + vanish():void
+}
+
+abstract class AbstractAircraft
+{
+	# maxHp:int
+    # hp:int
+    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + decreaseHp(int decrease):void
+    + getHp():int
+    + {abstract} shoot():List<BaseBullet>
+ }
+AbstractFlyingObject <|-- AbstractAircraft
+
+class HeroAircraft {
+    - shootNum:int
+    - power:int
+    - direction:int
+    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + heal(int healAmount):void
+}
+AbstractAircraft <|-- HeroAircraft
+
+class MobEnemy {
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+}
+AbstractAircraft <|-- MobEnemy
+
+class EliteEnemy {
+    - shootNum:int
+    - power:int
+    - direction:int
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + decreaseHp():void
+    + spawnItems():void
+}
+AbstractAircraft <|-- EliteEnemy
+
+abstract class BaseBullet
+{
+    - power:int
+    + BaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
+    + forward():void
+	+ getPower(int decrease):int
+
+}
+AbstractFlyingObject <|-- BaseBullet
+
+class HeroBullet {
+    + HeroBullet(int locationX, int locationY,
+     int speedX, int speedY, int power)
+}
+BaseBullet <|-- HeroBullet
+
+class EnemyBullet {
+    + EnemyBullet(int locationX, int locationY,
+     int speedX, int speedY, int power)
+}
+BaseBullet <|-- EnemyBullet
+
+
+abstract class BaseItem{
+    + BaseItem(int locationX, int locationY, int speedX, int speedY)
+    + {abstract}activateEffect(HeroAircraft heroAircraft):void
+    + forward():void
+}
+AbstractFlyingObject <|-- BaseItem
+
+class AttackItem {
+    + AttackItem(int locationX, int locationY, int speedX, int speedY)
+    + activateEffect(HeroAircraft heroAircraft):void
+}
+BaseItem <|-- AttackItem
+
+class BombItem {
+    + BombItem(int locationX, int locationY, int speedX, int speedY)
+    + activateEffect(HeroAircraft heroAircraft):void
+}
+
+BaseItem <|-- BombItem
+
+class HealthItem {
+    + HealthItem(int locationX, int locationY, int speedX, int speedY)
+    + activateEffect(HeroAircraft heroAircraft):void
+}
+BaseItem <|-- HealthItem
+
+
+'除去继承之外的关系
+
+'依赖关系
+HealthItem ..> HeroAircraft
+BombItem ..> HeroAircraft
+AttackItem ..> HeroAircraft
+HeroAircraft ..> EnemyBullet
+EliteEnemy ..> HeroBullet
+MobEnemy ..> HeroBullet
+
+'聚合关系
+HeroAircraft o--> HeroBullet
+EliteEnemy o--> EnemyBullet
+EliteEnemy o--> BaseItem
+
+
+@enduml
