@@ -3,10 +3,7 @@ package edu.hitsz.aircraft;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.application.Main;
-import edu.hitsz.item.BaseItem;
-import edu.hitsz.item.HealthItem;
-import edu.hitsz.item.BombItem;
-import edu.hitsz.item.AttackItem;
+import edu.hitsz.item.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +39,7 @@ public class EliteEnemy extends AbstractAircraft{
 
     @Override
     public List<BaseBullet> shoot() {
-        List<BaseBullet> EnemyAttack = new LinkedList<>();
+        List<BaseBullet> enemyAttack = new LinkedList<>();
         int x = this.getLocationX();
         int y = this.getLocationY() + direction*2;
         int speedX = 0;
@@ -52,23 +49,15 @@ public class EliteEnemy extends AbstractAircraft{
             // 子弹发射位置相对飞机位置向前偏移
             // 多个子弹横向分散
             bullet = new EnemyBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
-            EnemyAttack.add(bullet);
+            enemyAttack.add(bullet);
         }
-        return EnemyAttack;
+        return enemyAttack;
     }
 
-    @Override
-    public void decreaseHp(int decrease){
-        hp -= decrease;
-        if(hp <= 0){
-            hp=0;
 
-            vanish();
-        }
-    }
 
     public List<BaseItem> spawnItems() {
-        List<BaseItem> ItemList = new LinkedList<>();
+        List<BaseItem> itemList = new LinkedList<>();
         Random random = new Random();
         double isDrop = random.nextDouble();
         double dropType = random.nextDouble();
@@ -79,22 +68,25 @@ public class EliteEnemy extends AbstractAircraft{
             int speedX = 0;
             int speedY = 5;
             BaseItem item;
+            ItemFactory factory;
 
+            //概率掉落各种道具或者直接不掉落
             if (dropType < 0.4) {
-                // 40%概率是生命道具
-                item = new HealthItem(x, y, speedX, speedY);
+                factory = new HealthItemFactory();
+                item = factory.createItem(x, y, speedX, speedY);
+
             } else if (dropType < 0.6) {
-                // 30%概率是炸弹道具
-                item = new BombItem(x, y, speedX, speedY);
+                factory = new BombItemFactory();
+                item = factory.createItem(x, y, speedX, speedY);
             } else {
-                // 30%概率是攻击道具
-                item = new AttackItem(x, y, speedX, speedY);
+                factory = new AttackItemFactory();
+                item = factory.createItem(x, y, speedX, speedY);
             }
-            ItemList.add(item);
+            itemList.add(item);
         }
 
 
-        return ItemList;
+        return itemList;
     }
 
 }

@@ -3,8 +3,9 @@ package edu.hitsz.application;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
-import edu.hitsz.bullet.EnemyBullet;
+
 import edu.hitsz.item.BaseItem;
+
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.swing.*;
@@ -66,15 +67,13 @@ public class Game extends JPanel {
     private boolean gameOverFlag = false;
 
     public Game() {
-        heroAircraft = new HeroAircraft(
-                Main.WINDOW_WIDTH / 2,
-                Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
-                0, 0, 100);
 
+        heroAircraft = HeroAircraft.getInstance();
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         droppedItems = new LinkedList<>();
+
 
         /**
          * Scheduled 线程池，用于定时任务调度
@@ -106,24 +105,16 @@ public class Game extends JPanel {
                 // 新敌机产生
 
                 if (enemyAircrafts.size() < enemyMaxNumber) {
+                    AbstractAircraft enemy;
+                    EnemyFactory factory;
                     if (Math.random() < 0.5) {
-                        enemyAircrafts.add(new MobEnemy(
-                                (int) (Math.random() * (Main.WINDOW_WIDTH - ImageManager.MOB_ENEMY_IMAGE.getWidth())),
-                                (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05),
-                                0,
-                                10,
-                                30
-                        ));
+                        factory = new MobEnemyFactory();
+                        enemy = factory.createEnemy();
                     }else{
-                        enemyAircrafts.add(new EliteEnemy(
-                                (int)(Math.random() * (Main.WINDOW_WIDTH - ImageManager.Elite_ENEMY_IMAGE.getWidth())),
-                                (int)(Math.random()*Main.WINDOW_HEIGHT * 0.05),
-                                0,
-                                10,
-                                30
-                        ));
+                        factory = new EliteEnemyFactory();
+                        enemy = factory.createEnemy();
                     }
-
+                    enemyAircrafts.add(enemy);
 
 
                 }
