@@ -22,13 +22,7 @@ public class HeroAircraft extends AbstractAircraft {
 
     //创建静态实例
     private static HeroAircraft instance = new HeroAircraft();
-    /**
-     * @param locationX 英雄机位置x坐标
-     * @param locationY 英雄机位置y坐标
-     * @param speedX 英雄机射出的子弹的基准速度（英雄机无特定速度）
-     * @param speedY 英雄机射出的子弹的基准速度（英雄机无特定速度）
-     * @param hp    初始生命值
-     */
+
 //    public HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
 //        super(locationX, locationY, speedX, speedY, hp);
 //    }
@@ -38,6 +32,7 @@ public class HeroAircraft extends AbstractAircraft {
         super(Main.WINDOW_WIDTH / 2,
                 Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight(),
                 0, 0, 100);
+        this.shootInterval = 100;
     }
 
     //对外提供接口
@@ -45,7 +40,7 @@ public class HeroAircraft extends AbstractAircraft {
         return instance;
     }
 
-    //提供初始化函数，方便创建唯一实例时进行初始化
+    //提供初始化函数，方便将英雄机初始化（重生）
     public void init (int locationX, int locationY, int speedX, int speedY, int hp){
         this.locationX = locationX;
         this.locationY = locationY;
@@ -53,6 +48,7 @@ public class HeroAircraft extends AbstractAircraft {
         this.speedY = speedY;
         this.hp = hp;
         this.maxHp = hp;
+        this.isValid = true;
     }
 
     @Override
@@ -66,6 +62,19 @@ public class HeroAircraft extends AbstractAircraft {
      * @return 射击出的子弹List
      */
     public List<BaseBullet> shoot() {
+
+        // 获取当前时间
+//        long currentTime = System.currentTimeMillis();
+//
+//        // 检查是否达到射击间隔
+//        if (currentTime - lastShootTime < shootInterval) {
+//            return new LinkedList<>(); // 返回空列表，不射击
+//        }
+//
+//        // 更新上一次射击时间
+//        lastShootTime = currentTime;
+
+
         List<BaseBullet> res = new LinkedList<>();
         int x = this.getLocationX();
         int y = this.getLocationY() + direction*2;
@@ -75,7 +84,7 @@ public class HeroAircraft extends AbstractAircraft {
         for(int i=0; i<shootNum; i++){
             // 子弹发射位置相对飞机位置向前偏移
             // 多个子弹横向分散
-            bullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
+            bullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY * 2, power);
             res.add(bullet);
         }
         return res;
@@ -84,5 +93,7 @@ public class HeroAircraft extends AbstractAircraft {
     public void heal(int healAmount) {
         this.hp = Math.min(this.hp+healAmount, maxHp);
     }
+
+
 
 }

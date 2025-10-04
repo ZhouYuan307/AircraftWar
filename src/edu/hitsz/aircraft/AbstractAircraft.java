@@ -1,6 +1,7 @@
 package edu.hitsz.aircraft;
 
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.item.BaseItem;
 import edu.hitsz.basic.AbstractFlyingObject;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
      */
     protected int maxHp;
     protected int hp;
+    protected long lastShootTime = 0; // 记录上一次射击的时间
+    protected long shootInterval = 2000; // 射击间隔，默认为1000毫秒（1秒）
 
     public AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY);
@@ -25,10 +28,12 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
     }
 
     public void decreaseHp(int decrease){
-        hp -= decrease;
-        if(hp <= 0){
-            hp=0;
-            vanish();
+        if (decrease>0) {
+            hp -= decrease;
+            if (hp <= 0) {
+                hp = 0;
+                vanish();
+            }
         }
     }
 
@@ -44,6 +49,7 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
      *  非可射击对象空实现，返回null
      */
     public abstract List<BaseBullet> shoot();
+
 
 }
 

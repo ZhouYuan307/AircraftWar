@@ -2,32 +2,17 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
-import edu.hitsz.application.Main;
 import edu.hitsz.item.*;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-
-//精英敌机
-public class EliteEnemy extends AbstractEnemy{
-
-
-
-    public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
+public class SuperElite extends AbstractEnemy{
+    public SuperElite(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
-        this.shootNum = 1;
+        this.shootNum = 3;
         this.shootInterval = 800;
-    }
-
-    @Override
-    public void forward() {
-        super.forward();
-        // 判定 y 轴向下飞行出界
-        if (locationY >= Main.WINDOW_HEIGHT ) {
-            vanish();
-        }
     }
 
     @Override
@@ -51,15 +36,14 @@ public class EliteEnemy extends AbstractEnemy{
         int speedX = 0;
         int speedY = this.getSpeedY() + direction*5;
         BaseBullet bullet;
-        for(int i=0; i<shootNum; i++){
+        for(int i= -1; i<shootNum - 1; i++){
             // 子弹发射位置相对飞机位置向前偏移
             // 多个子弹横向分散
-            bullet = new EnemyBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY, power);
+            bullet = new EnemyBullet(x + i*20, y, speedX+i, speedY, power);
             enemyAttack.add(bullet);
         }
         return enemyAttack;
     }
-
 
     @Override
     public List<BaseItem> spawnItems() {
@@ -68,7 +52,7 @@ public class EliteEnemy extends AbstractEnemy{
         double isDrop = random.nextDouble();
         double dropType = random.nextDouble();
 
-        if (isDrop < 0.6) {
+        if (isDrop < 0.9) {
             int x = this.getLocationX();
             int y = this.getLocationY() + direction*2;
             int speedX = 0;
@@ -96,8 +80,7 @@ public class EliteEnemy extends AbstractEnemy{
     }
 
     @Override
-    public int getScores(){
-        return 30;
+    public int getScores() {
+        return 50;
     }
-
 }
