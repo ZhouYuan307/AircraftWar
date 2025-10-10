@@ -4,6 +4,9 @@ import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 
+import edu.hitsz.dao.DAO;
+import edu.hitsz.dao.Score;
+import edu.hitsz.dao.ScoreDAOImpl;
 import edu.hitsz.item.BaseItem;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -160,6 +163,11 @@ public class Game extends JPanel {
 
             // 游戏结束检查英雄机是否存活
             if (heroAircraft.getHp() <= 0) {
+                //记录分数并展示
+                DAO scoreDao = new ScoreDAOImpl();
+                scoreDao.addScore(new Score("DefaultUser", score));
+                scoreDao.printAllScores();
+                scoreDao.printLeaderboard(10);
                 // 游戏结束
                 executorService.shutdown();
                 gameOverFlag = true;
@@ -209,11 +217,13 @@ public class Game extends JPanel {
     private void shootAction() {
         // TODO 敌机射击
         for (AbstractEnemy enemy : enemyAircrafts) {
-            List<BaseBullet> bullets = enemy.shoot();
+//            List<BaseBullet> bullets = enemy.shoot();
+            List<BaseBullet> bullets = enemy.executeStrategy();
             enemyBullets.addAll(bullets);
         }
         // 英雄射击
-        heroBullets.addAll(heroAircraft.shoot());
+//        heroBullets.addAll(heroAircraft.shoot());
+        heroBullets.addAll(heroAircraft.executeStrategy());
     }
 
     private void bulletsMoveAction() {

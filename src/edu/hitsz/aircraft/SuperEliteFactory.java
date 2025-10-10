@@ -2,6 +2,8 @@ package edu.hitsz.aircraft;
 
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
+import edu.hitsz.bullet.EnemyBulletFactory;
+import edu.hitsz.strategy.ShootMultiStraight;
 
 public class SuperEliteFactory implements EnemyFactory{
     @Override
@@ -11,7 +13,10 @@ public class SuperEliteFactory implements EnemyFactory{
                 (int)(Math.random()*Main.WINDOW_HEIGHT * 0.05),
                 0,
                 5,
-                50
+                50,
+                new ShootMultiStraight(),
+                new EnemyBulletFactory()
+
         );
     }
 }

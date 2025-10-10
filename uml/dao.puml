@@ -1,0 +1,52 @@
+@startuml
+'https://plantuml.com/class-diagram
+interface DAO{
+    {abstract}addScore(Score score):void
+    {abstract}getAllScores():List<Score>
+    {abstract}printAllScores():void
+    {abstract}getTopScores(int TopN):List<Score>
+    {abstract}printLeaderboard(int TopN):void
+    {abstract}getScoresByUsername(String username):List<Score>
+    {abstract}printUserScores(String username):void
+    {abstract}clearAllScores():void
+}
+
+class ScoreDAOImpl{
+    - scores:List<Score>
+    - FILE_NAME:String
+    - nextId:int
+    + ScoreDAOImpl():void
+    - loadScoresFromFile():List<Score>
+    - saveScoresToFile():void
+    + addScore(Score score):void
+    + getAllScores():List<Score>
+    + printAllScores():void
+    + getTopScores(int topN):List<Score>
+    + printLeaderboard(int topN):void
+    + getScoresByUsername(String username):List<Score>
+    + printUserScores(String username):void
+    + clearAllScores():void
+    + getPersonalBest(String username):int
+}
+
+class Score{
+    - id:int
+    - username:String
+    - score:int
+    - time:String
+    + Score(int id, String username, int score, String time):void
+    + Score(String username, int score):void
+    + getId():int
+    + setId(int id):void
+    + getUsername():String
+    + setUsername(String username):void
+    + getScore():int
+    + setScore(int score):void
+    + getTime():String
+    + setTime(String time):void
+    + info():void
+}
+
+DAO <|.. ScoreDAOImpl
+ScoreDAOImpl --> Score
+@enduml

@@ -6,6 +6,7 @@ import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.bullet.HeroBullet;
 import edu.hitsz.item.AttackItem;
 import edu.hitsz.item.BombItem;
+import edu.hitsz.item.BulletPlusItem;
 import edu.hitsz.item.HealthItem;
 
 import javax.imageio.ImageIO;
@@ -40,6 +41,7 @@ public class ImageManager {
     public static BufferedImage ATTACK_ITEM_IMAGE;
     public static BufferedImage SUPER_ELITE_IMAGE;
     public static BufferedImage BOSS_IMAGE;
+    public static BufferedImage BULLET_PLUS_ITEM_IMAGE;
 
 
 
@@ -58,6 +60,7 @@ public class ImageManager {
             ATTACK_ITEM_IMAGE = ImageIO.read(new FileInputStream("src/images/prop_bullet.png"));
             SUPER_ELITE_IMAGE = ImageIO.read(new FileInputStream("src/images/elitePlus.png"));
             BOSS_IMAGE = ImageIO.read(new FileInputStream("src/images/boss.png"));
+            BULLET_PLUS_ITEM_IMAGE =  ImageIO.read(new FileInputStream("src/images/prop_bulletPlus.png"));
 
             CLASSNAME_IMAGE_MAP.put(HeroAircraft.class.getName(), HERO_IMAGE);
             CLASSNAME_IMAGE_MAP.put(MobEnemy.class.getName(), MOB_ENEMY_IMAGE);
@@ -69,6 +72,7 @@ public class ImageManager {
             CLASSNAME_IMAGE_MAP.put(AttackItem.class.getName(),ATTACK_ITEM_IMAGE);
             CLASSNAME_IMAGE_MAP.put(SuperElite.class.getName(),SUPER_ELITE_IMAGE);
             CLASSNAME_IMAGE_MAP.put(BossEnemy.class.getName(),BOSS_IMAGE);
+            CLASSNAME_IMAGE_MAP.put(BulletPlusItem.class.getName(),BULLET_PLUS_ITEM_IMAGE);
 
         } catch (IOException e) {
             e.printStackTrace();
