@@ -13,7 +13,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.sound.sampled.DataLine.Info;
 
 public class MusicThread extends Thread {
 
@@ -23,7 +22,7 @@ public class MusicThread extends Thread {
         LOOP        // 循环播放
     }
 
-    private String filename;
+    private final String filename;
     private AudioFormat audioFormat;
     private byte[] samples;
     private PlayMode playMode;
@@ -156,9 +155,6 @@ public class MusicThread extends Thread {
         return this.isPlaying && this.isAlive();
     }
 
-    /**
-     * 线程执行方法
-     */
     @Override
     public void run() {
         if (samples == null) {

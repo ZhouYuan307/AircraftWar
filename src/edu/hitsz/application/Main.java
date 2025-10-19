@@ -39,10 +39,5 @@ public class Main {
         MenuGUI menu = new MenuGUI();
         cardPanel.add(menu.getMainPanel());
         frame.setVisible(true);
-
-        //Game game = new Game();
-        //frame.add(game);
-        //frame.setVisible(true);
-        //game.action();
     }
 }

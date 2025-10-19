@@ -69,7 +69,6 @@ public class MusicManager {
         musicMap.put(musicName, fileName);
     }
 
-
     //检查音频文件是否存在
     public boolean containsMusic(String musicName) {
         return musicMap.containsKey(musicName);

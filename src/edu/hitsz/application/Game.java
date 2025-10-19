@@ -4,8 +4,6 @@ import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.item.BaseItem;
 import edu.hitsz.item.BombItem;
-import edu.hitsz.music.MusicManager;
-import edu.hitsz.music.MusicThread;
 import edu.hitsz.music.PlaySoundManager;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import javax.swing.*;
@@ -23,18 +21,11 @@ import java.util.concurrent.*;
 public class Game extends JPanel {
 
     //name
-    private String userName ="Default User";
+    private final String userName;
 
     //音乐相关
-    private String musicMode;
-    private PlaySoundManager playSoundManager;
+    private final PlaySoundManager playSoundManager;
 
-//    private final MusicThread bgm = new MusicThread(MusicManager.BGM, MusicThread.PlayMode.LOOP);
-//    private final MusicThread bgmBoss = new MusicThread(MusicManager.BGM_BOSS, MusicThread.PlayMode.LOOP);
-//    private final MusicThread bulletHit = new MusicThread(MusicManager.BULLET_HIT, MusicThread.PlayMode.ONCE);
-//    private final MusicThread bombExplosion = new MusicThread(MusicManager.BOMB_EXPLOSION, MusicThread.PlayMode.ONCE);
-//    private final MusicThread gameOver = new MusicThread(MusicManager.GAME_OVER, MusicThread.PlayMode.ONCE);
-//    private final MusicThread getSupply = new MusicThread(MusicManager.GET_SUPPLY, MusicThread.PlayMode.ONCE);
 
 
     //背景图片
@@ -70,8 +61,6 @@ public class Game extends JPanel {
     private int cycleTime = 0;
     //boss状态
     private boolean isBossExist = false;
-    //游戏结束标志
-    private boolean gameOverFlag = false;
 
     public Game(String musicMode, String userName) {
         heroAircraft = HeroAircraft.getInstance();
@@ -82,13 +71,12 @@ public class Game extends JPanel {
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         droppedItems = new LinkedList<>();
-
-        this.musicMode = musicMode;
         this.userName = userName;
-        /**
-         * Scheduled 线程池，用于定时任务调度
-         * 关于alibaba code guide：可命名的 ThreadFactory 一般需要第三方包
-         * apache 第三方库： org.apache.commons.lang3.concurrent.BasicThreadFactory
+
+        /*
+          Scheduled 线程池，用于定时任务调度
+          关于alibaba code guide：可命名的 ThreadFactory 一般需要第三方包
+          apache 第三方库： org.apache.commons.lang3.concurrent.BasicThreadFactory
          */
         this.executorService = new ScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("game-action-%d").daemon(true).build());
@@ -100,14 +88,30 @@ public class Game extends JPanel {
     }
 
 
+    private static AbstractEnemy getEnemy() {
+        AbstractEnemy enemy;
+        EnemyFactory factory;
+        Random random = new Random();
+        double enemyType = random.nextDouble();
 
+        if (enemyType < 0.5) {
+            factory = new MobEnemyFactory();
+            enemy = factory.createEnemy();
+        } else if (enemyType <0.9) {
+            factory = new EliteEnemyFactory();
+            enemy = factory.createEnemy();
+        } else{
+            factory = new SuperEliteFactory();
+            enemy = factory.createEnemy();
+        }
+        return enemy;
+    }
 
 
     /**
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
-        //TODO bgm start
         playSoundManager.playBgm();
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
@@ -121,21 +125,7 @@ public class Game extends JPanel {
                 // 新敌机产生
 
                 if (enemyAircrafts.size() < enemyMaxNumber) {
-                    AbstractEnemy enemy;
-                    EnemyFactory factory;
-                    Random random = new Random();
-                    double enemyType = random.nextDouble();
-
-                    if (enemyType < 0.5) {
-                        factory = new MobEnemyFactory();
-                        enemy = factory.createEnemy();
-                    } else if (enemyType <0.9) {
-                        factory = new EliteEnemyFactory();
-                        enemy = factory.createEnemy();
-                    } else{
-                        factory = new SuperEliteFactory();
-                        enemy = factory.createEnemy();
-                    }
+                    AbstractEnemy enemy = getEnemy();
                     enemyAircrafts.add(enemy);
                     checkForBossSpawn();
                 }
@@ -167,11 +157,6 @@ public class Game extends JPanel {
 
             // 游戏结束检查英雄机是否存活
             if (heroAircraft.getHp() <= 0) {
-                //记录分数并展示
-                //DAO scoreDao = new ScoreDAOImpl();
-                //scoreDao.addScore(new Score("DefaultUser", score));
-                //scoreDao.printAllScores();
-                //scoreDao.printLeaderboard(10);
 
                 // 游戏结束
                 playSoundManager.stopBgm();
@@ -183,14 +168,10 @@ public class Game extends JPanel {
                 }
                 playSoundManager.shutdown();
                 executorService.shutdown();
-                gameOverFlag = true;
                 System.out.println("Game Over!");
 
 
                 //跳转到排行榜gui
-                //ScoreGUI scoreGUI = new ScoreGUI();
-                //Main.cardPanel.add(scoreGUI.getMainPanel());
-                //Main.cardLayout.last(Main.cardPanel);
                 ScoreController controller = new ScoreController(userName, score);
                 Main.cardPanel.add(controller.getScoreGUI().getMainPanel());
                 Main.cardLayout.last(Main.cardPanel);
@@ -198,13 +179,15 @@ public class Game extends JPanel {
 
         };
 
-        /**
-         * 以固定延迟时间进行执行
-         * 本次任务执行完成后，需要延迟设定的延迟时间，才会执行新的任务
+        /*
+          以固定延迟时间进行执行
+          本次任务执行完成后，需要延迟设定的延迟时间，才会执行新的任务
          */
         executorService.scheduleWithFixedDelay(task, timeInterval, timeInterval, TimeUnit.MILLISECONDS);
 
     }
+
+
 
     //***********************
     //      Action 各部分
@@ -385,12 +368,7 @@ public class Game extends JPanel {
     public void setBackground(BufferedImage image){
         this.background = image;
     }
-    /**
-     * 重写paint方法
-     * 通过重复调用paint方法，实现游戏动画
-     *
-     * @param  g
-     */
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -419,7 +397,7 @@ public class Game extends JPanel {
     }
 
     private void paintImageWithPositionRevised(Graphics g, List<? extends AbstractFlyingObject> objects) {
-        if (objects.size() == 0) {
+        if (objects.isEmpty()) {
             return;
         }
 

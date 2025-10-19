@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 
 public class PlaySoundManager {
 
-    private boolean isMusicEnabled;
+    private final boolean isMusicEnabled;
     public PlaySoundManager(boolean isMusicEnabled) {
         this.isMusicEnabled = isMusicEnabled;
     }
