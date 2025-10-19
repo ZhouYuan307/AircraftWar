@@ -16,6 +16,9 @@ public class AttackItem extends BaseItem {
     public void activateEffect(HeroAircraft heroAircraft) {
         System.out.print("FireSupply active!");
         heroAircraft.setStrategy(new ShootMultiStraight());
+        heroAircraft.isReset = false;
+        heroAircraft.setShootInterval(0);
+        heroAircraft.setEffectTimer(10000);
     }
 
 }

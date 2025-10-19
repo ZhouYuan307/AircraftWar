@@ -3,7 +3,6 @@ package edu.hitsz.aircraft;
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.EnemyBulletFactory;
-import edu.hitsz.strategy.ShootMultiStraight;
 import edu.hitsz.strategy.ShootStraight;
 
 

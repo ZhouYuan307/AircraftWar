@@ -6,17 +6,11 @@ import edu.hitsz.strategy.ShootStraight;
 
 
 public class HeroAircraft extends AbstractAircraft {
-
-
-
-
-
+    private int effectTimer;
+    public boolean isReset = true;
     //创建静态实例
-    private static HeroAircraft instance = new HeroAircraft();
+    private static final HeroAircraft instance = new HeroAircraft();
 
-//    public HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp) {
-//        super(locationX, locationY, speedX, speedY, hp);
-//    }
 
     //私有构造函数，使用默认参数
     private HeroAircraft(){
@@ -43,46 +37,16 @@ public class HeroAircraft extends AbstractAircraft {
         this.hp = hp;
         this.maxHp = hp;
         this.isValid = true;
+        this.effectTimer = 0;
+        this.isReset = true;
+        this.shootInterval = 0;
+        setStrategy(new ShootStraight());
     }
 
     @Override
     public void forward() {
         // 英雄机由鼠标控制，不通过forward函数移动
     }
-
-//    @Override
-//    /**
-//     * 通过射击产生子弹
-//     * @return 射击出的子弹List
-//     */
-//    public List<BaseBullet> shoot() {
-//
-//        // 获取当前时间
-////        long currentTime = System.currentTimeMillis();
-////
-////        // 检查是否达到射击间隔
-////        if (currentTime - lastShootTime < shootInterval) {
-////            return new LinkedList<>(); // 返回空列表，不射击
-////        }
-////
-////        // 更新上一次射击时间
-////        lastShootTime = currentTime;
-//
-//
-//        List<BaseBullet> res = new LinkedList<>();
-//        int x = this.getLocationX();
-//        int y = this.getLocationY() + direction*2;
-//        int speedX = 0;
-//        int speedY = this.getSpeedY() + direction*5;
-//        BaseBullet bullet;
-//        for(int i=0; i<shootNum; i++){
-//            // 子弹发射位置相对飞机位置向前偏移
-//            // 多个子弹横向分散
-//            bullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y, speedX, speedY * 2, power);
-//            res.add(bullet);
-//        }
-//        return res;
-//    }
 
     public void heal(int healAmount) {
         this.hp = Math.min(this.hp+healAmount, maxHp);
@@ -92,6 +56,23 @@ public class HeroAircraft extends AbstractAircraft {
         this.shootInterval = interval;
     }
 
+    public void setEffectTimer(int duration) {
+        this.effectTimer = duration;
+    }
 
+    public long getEffectTimer() {
+        return this.effectTimer;
+    }
+
+    public void resetStrategy(){
+        this.strategy = new ShootStraight();
+        this.shootInterval = 0;
+        this.isReset = true;
+    }
+
+    public void effectTimerUpdate(int timeInterval){
+        this.effectTimer -= timeInterval;
+
+    }
 
 }

@@ -13,5 +13,7 @@ public class BulletPlusItem extends BaseItem{
         System.out.print("BulletPlus active!");
         heroAircraft.setStrategy(new ShootCircle());
         heroAircraft.setShootInterval(1500);
+        heroAircraft.isReset = false;
+        heroAircraft.setEffectTimer(10000);
     }
 }
