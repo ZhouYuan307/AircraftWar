@@ -164,5 +164,7 @@ public abstract class AbstractFlyingObject {
         isValid = false;
     }
 
+    public int bombEffect(){return 0;}
+
 }
 

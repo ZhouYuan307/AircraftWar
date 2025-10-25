@@ -35,4 +35,10 @@ public class EliteEnemy extends AbstractEnemy{
         return 30;
     }
 
+    @Override
+    public int bombEffect() {
+        this.vanish();
+        return this.getScores();
+    }
+
 }

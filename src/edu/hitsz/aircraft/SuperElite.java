@@ -19,4 +19,10 @@ public class SuperElite extends AbstractEnemy{
     public int getScores() {
         return 50;
     }
+
+    @Override
+    public int bombEffect() {
+        this.decreaseHp(25);
+        return this.getScores();
+    }
 }

@@ -40,4 +40,9 @@ public class MobEnemy extends AbstractEnemy {
         return 10;
     }
 
+    @Override
+    public int bombEffect() {
+        this.vanish();
+        return this.getScores();
+    }
 }

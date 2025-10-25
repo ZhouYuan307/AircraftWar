@@ -1,8 +1,12 @@
 package edu.hitsz.aircraft;
 import edu.hitsz.application.ImageManager;
 import edu.hitsz.application.Main;
+import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.bullet.HeroBulletFactory;
 import edu.hitsz.strategy.ShootStraight;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class HeroAircraft extends AbstractAircraft {
@@ -11,6 +15,9 @@ public class HeroAircraft extends AbstractAircraft {
     //创建静态实例
     private static final HeroAircraft instance = new HeroAircraft();
 
+    private final List<AbstractFlyingObject> observerList = new LinkedList<>();
+
+    private int tempScores = 0;
 
     //私有构造函数，使用默认参数
     private HeroAircraft(){
@@ -73,6 +80,31 @@ public class HeroAircraft extends AbstractAircraft {
     public void effectTimerUpdate(int timeInterval){
         this.effectTimer -= timeInterval;
 
+    }
+
+    public void addObserver(AbstractFlyingObject observer){
+        observerList.add(observer);
+    }
+
+    public void removeObserver(AbstractFlyingObject observer){
+        observerList.remove(observer);
+    }
+
+    public void removeInvalid(){
+        observerList.removeIf(AbstractFlyingObject::notValid);
+    }
+
+    public void useBomb(){
+        tempScores = 0;
+        for (AbstractFlyingObject observer :observerList){
+            tempScores += observer.bombEffect();
+        }
+    }
+
+    public int getScores(){
+        int score = tempScores;
+        tempScores = 0;
+        return score;
     }
 
 }

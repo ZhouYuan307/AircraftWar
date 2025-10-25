@@ -127,6 +127,7 @@ public class Game extends JPanel {
                 if (enemyAircrafts.size() < enemyMaxNumber) {
                     AbstractEnemy enemy = getEnemy();
                     enemyAircrafts.add(enemy);
+                    heroAircraft.addObserver(enemy);
                     checkForBossSpawn();
                 }
 
@@ -236,6 +237,9 @@ public class Game extends JPanel {
         for (AbstractEnemy enemy : enemyAircrafts) {
             List<BaseBullet> bullets = enemy.executeStrategy();
             enemyBullets.addAll(bullets);
+            for (AbstractFlyingObject bullet: bullets){
+                heroAircraft.addObserver(bullet);
+            }
         }
         // 英雄射击
         heroBullets.addAll(heroAircraft.executeStrategy());
@@ -300,7 +304,6 @@ public class Game extends JPanel {
                     enemyAircraft.decreaseHp(bullet.getPower());
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
-                        // TODO 获得分数，产生道具补给，并产生boss
                         if(enemyAircraft instanceof BossEnemy)
                         {
                             playSoundManager.stopBgmBoss();
@@ -329,19 +332,18 @@ public class Game extends JPanel {
             }
         }
 
-        // Todo: 我方获得道具，道具生效
         for (BaseItem item : droppedItems) {
             if (item.notValid()) {
                 continue;
             }
             if (heroAircraft.crash(item)) {
-                // Todo 英雄机撞到道具，获得增益
                 if (item instanceof BombItem){
                     playSoundManager.playBombExplosion();
                 }else{
                     playSoundManager.playGetSupply();
                 }
                 item.activateEffect(heroAircraft);
+                score += heroAircraft.getScores();
                 item.vanish();
             }
         }
@@ -359,6 +361,7 @@ public class Game extends JPanel {
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid);
         droppedItems.removeIf(AbstractFlyingObject::notValid);
+        heroAircraft.removeInvalid();
     }
 
 
