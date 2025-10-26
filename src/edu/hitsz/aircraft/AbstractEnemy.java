@@ -34,7 +34,7 @@ public abstract class AbstractEnemy extends AbstractAircraft {
             ItemFactory factory;
 
             //概率掉落各种道具或者直接不掉落
-            if (dropType < 0.2) {
+            if (dropType < 0.1) {
                 factory = new HealthItemFactory();
                 item = factory.createItem(x, y, speedX, speedY);
             } else if (dropType < 0.7) {

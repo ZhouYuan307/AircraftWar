@@ -25,14 +25,14 @@ public class MenuGUI {
             public void actionPerformed(ActionEvent e) {
                 if(nameCheck){
                     nameCheck = false;
-                    Game game = new Game(comboBox1.getSelectedItem().toString(), userName);
+                    Game game = new GameEasy(comboBox1.getSelectedItem().toString(), userName);
                     game.setBackground(ImageManager.BACKGROUND_IMAGE_EASY);
                     Main.cardPanel.add(game);
                     Main.cardLayout.last(Main.cardPanel);
                     game.action();
                 }else{
                     JOptionPane.showMessageDialog(mainPanel,
-                            "Please enter your name!",
+                            "Please enter your name or click OK!",
                             "Oops",
                             JOptionPane.WARNING_MESSAGE);
                 }
@@ -45,14 +45,14 @@ public class MenuGUI {
             public void actionPerformed(ActionEvent e) {
                 if(nameCheck){
                     nameCheck = false;
-                    Game game = new Game(comboBox1.getSelectedItem().toString(), userName);
+                    Game game = new GameNormal(comboBox1.getSelectedItem().toString(), userName);
                     game.setBackground(ImageManager.BACKGROUND_IMAGE_NORMAL);
                     Main.cardPanel.add(game);
                     Main.cardLayout.last(Main.cardPanel);
                     game.action();
                 }else{
                     JOptionPane.showMessageDialog(mainPanel,
-                            "Please enter your name!",
+                            "Please enter your name or click OK!",
                             "Oops",
                             JOptionPane.WARNING_MESSAGE);
                 }
@@ -66,14 +66,14 @@ public class MenuGUI {
             public void actionPerformed(ActionEvent e) {
                 if(nameCheck){
                     nameCheck = false;
-                    Game game = new Game(comboBox1.getSelectedItem().toString(), userName);
+                    Game game = new GameHard(comboBox1.getSelectedItem().toString(), userName);
                     game.setBackground(ImageManager.BACKGROUND_IMAGE_HARD);
                     Main.cardPanel.add(game);
                     Main.cardLayout.last(Main.cardPanel);
                     game.action();
                 }else{
                     JOptionPane.showMessageDialog(mainPanel,
-                            "Please enter your name!",
+                            "Please enter your name or click OK!",
                             "Oops",
                             JOptionPane.WARNING_MESSAGE);
                 }
@@ -88,7 +88,7 @@ public class MenuGUI {
                 userName = getName.getText().trim();
                 if (userName.isEmpty()){
                     JOptionPane.showMessageDialog(null,
-                            "Please enter your name!",
+                            "Please enter your name and click OK!",
                             "Oops",
                             JOptionPane.ERROR_MESSAGE);
                     nameCheck = false;

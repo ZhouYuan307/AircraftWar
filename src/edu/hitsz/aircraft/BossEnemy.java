@@ -33,7 +33,7 @@ public class BossEnemy extends AbstractEnemy{
 
     @Override
     public int getScores() {
-        return 200;
+        return 150;
     }
 }
 

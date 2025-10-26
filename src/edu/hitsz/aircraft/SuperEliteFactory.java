@@ -7,13 +7,13 @@ import edu.hitsz.strategy.ShootMultiStraight;
 
 public class SuperEliteFactory implements EnemyFactory{
     @Override
-    public AbstractEnemy createEnemy() {
+    public AbstractEnemy createEnemy(int hp) {
         return new SuperElite(
                 (int)(ImageManager.SUPER_ELITE_IMAGE.getWidth()*0.5+Math.random() * (Main.WINDOW_WIDTH - ImageManager.SUPER_ELITE_IMAGE.getWidth())),
                 (int)(Math.random()*Main.WINDOW_HEIGHT * 0.05),
                 0,
                 5,
-                50,
+                hp,
                 new ShootMultiStraight(),
                 new EnemyBulletFactory()
 

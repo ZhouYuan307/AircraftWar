@@ -10,8 +10,8 @@ public class BulletPlusItem extends BaseItem{
 
     @Override
     public void activateEffect(HeroAircraft heroAircraft) {
-        System.out.print("BulletPlus active!");
         heroAircraft.setStrategy(new ShootCircle());
+        heroAircraft.saveInterval();
         heroAircraft.setShootInterval(1500);
         heroAircraft.isReset = false;
         heroAircraft.setEffectTimer(10000);

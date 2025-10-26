@@ -17,7 +17,6 @@ public class BombItem extends BaseItem {
     @Override
     public void activateEffect(HeroAircraft heroAircraft) {
         heroAircraft.useBomb();
-        System.out.print("BombSupply active!");
     }
 
 }

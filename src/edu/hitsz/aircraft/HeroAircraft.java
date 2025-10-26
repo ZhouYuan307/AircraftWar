@@ -19,13 +19,15 @@ public class HeroAircraft extends AbstractAircraft {
 
     private int tempScores = 0;
 
+    private long savedShootInterval;
+
     //私有构造函数，使用默认参数
     private HeroAircraft(){
         super(Main.WINDOW_WIDTH / 2,
                 Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight(),
                 0, 0, 100, new ShootStraight(), new HeroBulletFactory());
         this.shootInterval = 0;
-        this.power = 30;
+        this.power = 300;
         this.direction = -1;
 
     }
@@ -73,7 +75,7 @@ public class HeroAircraft extends AbstractAircraft {
 
     public void resetStrategy(){
         this.strategy = new ShootStraight();
-        this.shootInterval = 0;
+        this.shootInterval = savedShootInterval;
         this.isReset = true;
     }
 
@@ -105,6 +107,18 @@ public class HeroAircraft extends AbstractAircraft {
         int score = tempScores;
         tempScores = 0;
         return score;
+    }
+
+    public void addInterval(int interval){
+        this.shootInterval += interval;
+    }
+
+    public void saveInterval(){
+        this.savedShootInterval = this.shootInterval;
+    }
+
+    public long getInterval(){
+        return this.shootInterval;
     }
 
 }
