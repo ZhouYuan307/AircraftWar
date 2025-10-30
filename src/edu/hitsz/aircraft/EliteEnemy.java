@@ -19,16 +19,6 @@ public class EliteEnemy extends AbstractEnemy{
         this.itemAmount = 2;
     }
 
-    @Override
-    public void forward() {
-        super.forward();
-        // 判定 y 轴向下飞行出界
-        if (locationY >= Main.WINDOW_HEIGHT ) {
-            vanish();
-        }
-    }
-
-
 
     @Override
     public int getScores(){

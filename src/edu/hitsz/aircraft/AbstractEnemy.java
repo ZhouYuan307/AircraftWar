@@ -1,6 +1,7 @@
 package edu.hitsz.aircraft;
 
 
+import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BulletFactory;
 import edu.hitsz.item.*;
 import edu.hitsz.strategy.ShootStrategy;
@@ -51,6 +52,15 @@ public abstract class AbstractEnemy extends AbstractAircraft {
         }
 
         return itemList;
+    }
+
+    @Override
+    public void forward() {
+        super.forward();
+        // 判定 y 轴向下飞行出界
+        if (locationY >= Main.WINDOW_HEIGHT ) {
+            vanish();
+        }
     }
 
     public abstract int getScores();

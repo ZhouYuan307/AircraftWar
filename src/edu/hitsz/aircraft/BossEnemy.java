@@ -35,5 +35,10 @@ public class BossEnemy extends AbstractEnemy{
     public int getScores() {
         return 150;
     }
+
+    @Override
+    public int bombEffect() {
+        return 0;
+    }
 }
 

@@ -121,4 +121,8 @@ public class HeroAircraft extends AbstractAircraft {
         return this.shootInterval;
     }
 
+    @Override
+    public int bombEffect() {
+        return 0;
+    }
 }

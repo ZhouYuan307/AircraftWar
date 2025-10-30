@@ -24,19 +24,21 @@ abstract class AbstractFlyingObject
     + getHeight():int
     + notValid():boolean
     + vanish():void
+    + {abstract}bombEffect():int
+
 }
 
 abstract class AbstractAircraft
 {
-	# maxHp:int
-    # hp:int
     # strategy:ShootStrategy
     # bulletFactory:BulletFactory
+	# maxHp:int
+    # hp:int
     # lastShootTime:long
     # shootInterval:long
     # power:int
     # direction:int
-    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy strategy, BulletFactory bulletFactory)
     + decreaseHp(int decrease):void
     + getHp():int
     + setStrategy(ShootStrategy strategy):void
@@ -46,41 +48,74 @@ AbstractFlyingObject <|-- AbstractAircraft
 
 abstract class AbstractEnemy
 {
-    # shootNum:int
-    # power:int
-    # direction:int
-    + AbstractEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + {abstract} spawnItems():List<BaseItem>
+    # itemAmount:int
+    + AbstractEnemy(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy strategy, BulletFactory bulletFactory)
+    + spawnItems():List<BaseItem>
+    + forward():void
     + {abstract} getScores():int
  }
 AbstractAircraft <|-- AbstractEnemy
 
 class HeroAircraft {
-    - shootNum:int
-    - power:int
-    - direction:int
-    + HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-    + heal(int healAmount):void
+  - effectTimer:int
+  + isReset:boolean
+  - {static}instance:HeroAircraft
+  - observerList:List<AbstractFlyingObject>
+  - tempScores:int
+  - savedShootInterval:long
+  - HeroAircraft()
+  + {static} getInstance():HeroAircraft
+  + init(int locationX,int locationY, int speedX,int speedY,int hp):void
+  + forward():void
+  + heal(int healAmount):void
+  + setShootInterval(int interval):void
+  + setEffectTimer(int duration):void
+  + getEffectTimer():long
+  + resetStrategy():void
+  + effectTimerUpdate(int timeInterval):void
+  + addObserver(AbstractFlyingObject observer):void
+  + removeObserver(AbstractFlyingObject observer):void
+  + removeInvalid():void
+  + useBomb():void
+  + getScores():int
+  + addInterval(int interval): void
+  + saveInterval():void
+  + getInterval():long
+  + bombEffect():int
 }
 AbstractAircraft <|-- HeroAircraft
 
 class MobEnemy {
-    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy strategy, BulletFactory bulletFactory)
+    + spawnItems():List<BaseItem>
+    + getScores():int
+    + bombEffect():int
 }
 AbstractEnemy <|-- MobEnemy
 
 class EliteEnemy {
-    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-    + decreaseHp():void
-    + spawnItems():void
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp,ShootStrategy strategy, BulletFactory bulletFactory)
+    + getScores():int
+    + bombEffect():int
 }
 AbstractEnemy <|-- EliteEnemy
+
+class SuperElite {
+    + SuperElite(int locationX, int locationY, int speedX, int speedY, int hp,ShootStrategy strategy, BulletFactory bulletFactory)
+    + getScores():int
+    + bombEffect():int
+}
+AbstractEnemy <|-- SuperElite
+
+class BossEnemy {
+    - minX:int
+    - maxX:int
+    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp,ShootStrategy strategy, BulletFactory bulletFactory)
+    + forward():void
+    + getScores():int
+    + bombEffect():int
+}
+AbstractEnemy <|-- BossEnemy
 
 abstract class BaseBullet
 {
@@ -99,8 +134,8 @@ class HeroBullet {
 BaseBullet <|-- HeroBullet
 
 class EnemyBullet {
-    + EnemyBullet(int locationX, int locationY,
-     int speedX, int speedY, int power)
+    + EnemyBullet(int locationX, int locationY,int speedX, int speedY, int power)
+    + bombEffect():int
 }
 BaseBullet <|-- EnemyBullet
 
@@ -109,6 +144,7 @@ abstract class BaseItem{
     + BaseItem(int locationX, int locationY, int speedX, int speedY)
     + {abstract}activateEffect(HeroAircraft heroAircraft):void
     + forward():void
+    + bombEffect():int
 }
 AbstractFlyingObject <|-- BaseItem
 
@@ -131,21 +167,12 @@ class HealthItem {
 }
 BaseItem <|-- HealthItem
 
+class BulletPlusItem {
+    + BulletPlusItem(int locationX, int locationY, int speedX, int speedY)
+    + activateEffect(HeroAircraft heroAircraft):void
+}
+BaseItem <|-- BulletPlusItem
 
-'除去继承之外的关系
-
-'依赖关系
-HealthItem ..> HeroAircraft
-BombItem ..> HeroAircraft
-AttackItem ..> HeroAircraft
-HeroAircraft ..> EnemyBullet
-EliteEnemy ..> HeroBullet
-MobEnemy ..> HeroBullet
-
-'聚合关系
-HeroAircraft o--> HeroBullet
-EliteEnemy o--> EnemyBullet
-EliteEnemy o--> BaseItem
 
 
 @enduml

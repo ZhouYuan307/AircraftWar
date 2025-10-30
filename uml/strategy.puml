@@ -2,15 +2,15 @@
 'https://plantuml.com/class-diagram
 abstract class AbstractAircraft
 {
-	# maxHp:int
-    # hp:int
     # strategy:ShootStrategy
     # bulletFactory:BulletFactory
+	# maxHp:int
+    # hp:int
     # lastShootTime:long
     # shootInterval:long
     # power:int
     # direction:int
-    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp)
+    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy strategy, BulletFactory bulletFactory)
     + decreaseHp(int decrease):void
     + getHp():int
     + setStrategy(ShootStrategy strategy):void
@@ -37,11 +37,12 @@ class ShootCircle{
     +doShoot(int x, int y, int direction, int power, BulletFactory factory):List<BaseBullet>
 }
 
- abstract class BaseItem{
-     + BaseItem(int locationX, int locationY, int speedX, int speedY)
-     + {abstract}activateEffect(HeroAircraft heroAircraft):void
-     + forward():void
- }
+abstract class BaseItem{
+    + BaseItem(int locationX, int locationY, int speedX, int speedY)
+    + {abstract}activateEffect(HeroAircraft heroAircraft):void
+    + forward():void
+    + bombEffect():int
+}
 
 ShootStrategy <|..  ShootStraight
 ShootStrategy <|..  ShootNull

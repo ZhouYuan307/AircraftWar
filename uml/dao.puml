@@ -39,9 +39,7 @@ class Score{
     + getId():int
     + setId(int id):void
     + getUsername():String
-    + setUsername(String username):void
     + getScore():int
-    + setScore(int score):void
     + getTime():String
     + setTime(String time):void
     + info():void

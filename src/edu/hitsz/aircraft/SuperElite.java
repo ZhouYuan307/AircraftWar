@@ -23,6 +23,9 @@ public class SuperElite extends AbstractEnemy{
     @Override
     public int bombEffect() {
         this.decreaseHp(25);
-        return this.getScores();
+        if (this.hp <= 0) {
+            return this.getScores();
+        }
+        return 0;
     }
 }

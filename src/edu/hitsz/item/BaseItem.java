@@ -32,5 +32,7 @@ public abstract class BaseItem extends AbstractFlyingObject {
             vanish();
         }
     }
-
+    public int bombEffect() {
+        return 0;
+    }
 }

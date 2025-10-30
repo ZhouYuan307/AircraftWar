@@ -23,13 +23,16 @@ abstract class AbstractFlyingObject
     + getHeight():int
     + notValid():boolean
     + vanish():void
+    + {abstract}bombEffect():int
+
 }
 
- abstract class BaseItem{
-     + BaseItem(int locationX, int locationY, int speedX, int speedY)
-     + {abstract}activateEffect(HeroAircraft heroAircraft):void
-     + forward():void
- }
+abstract class BaseItem{
+    + BaseItem(int locationX, int locationY, int speedX, int speedY)
+    + {abstract}activateEffect(HeroAircraft heroAircraft):void
+    + forward():void
+    + bombEffect():int
+}
  AbstractFlyingObject <|-- BaseItem
 
 interface ItemFactory {
@@ -51,6 +54,10 @@ class AttackItemFactory{
 }
 ItemFactory <|.. AttackItemFactory
 
+class BulletPlusItemFactory{
+    +createItem(int locationX, int locationY, int speedX, int speedY):BaseItem
+}
+ItemFactory <|.. BulletPlusItemFactory
 
 class AttackItem {
     + AttackItem(int locationX, int locationY, int speedX, int speedY)
@@ -60,7 +67,7 @@ AttackItemFactory ..> AttackItem
 BaseItem <|-- AttackItem
 
 class BombItem {
-    + AttackItem(int locationX, int locationY, int speedX, int speedY)
+    + BombItem(int locationX, int locationY, int speedX, int speedY)
     + activateEffect(HeroAircraft heroAircraft):void
 }
 BombItemFactory ..> BombItem
@@ -72,4 +79,12 @@ class HealthItem {
 }
 HealthItemFactory ..> HealthItem
 BaseItem <|-- HealthItem
+
+
+class BulletPlusItem {
+    + BulletPlusItem(int locationX, int locationY, int speedX, int speedY)
+    + activateEffect(HeroAircraft heroAircraft):void
+}
+BulletPlusItemFactory ..> BulletPlusItem
+BaseItem <|-- BulletPlusItem
 @enduml

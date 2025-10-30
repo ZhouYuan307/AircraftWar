@@ -2,44 +2,73 @@
 'https://plantuml.com/class-diagram
 abstract class AbstractEnemy
 {
-    # shootNum:int
-    # power:int
-    # direction:int
-    + AbstractEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + {abstract} spawnItems():List<BaseItem>
+    # itemAmount:int
+    + AbstractEnemy(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy strategy, BulletFactory bulletFactory)
+    + spawnItems():List<BaseItem>
+    + forward():void
     + {abstract} getScores():int
  }
 
 interface EnemyFactory {
-    +{abstract}createEnemy():AbstractEnemy
+    +{abstract}createEnemy(int hp):AbstractEnemy
 }
 
 class EliteEnemyFactory{
-    +createEnemy():AbstractEnemy
+    +createEnemy(int hp):AbstractEnemy
 }
 EnemyFactory <|.. EliteEnemyFactory
 
 class MobEnemyFactory{
-    +createEnemy():AbstractEnemy
+    +createEnemy(int hp):AbstractEnemy
 }
 EnemyFactory <|.. MobEnemyFactory
 
+class SuperEliteFactory{
+    +createEnemy(int hp):AbstractEnemy
+}
+EnemyFactory <|.. SuperEliteFactory
+
+class BossFactory{
+    +createEnemy(int hp):AbstractEnemy
+}
+EnemyFactory <|.. BossFactory
+
 class EliteEnemy {
-    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
-    + decreaseHp():void
-    + spawnItems():void
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp,ShootStrategy strategy, BulletFactory bulletFactory)
+    + getScores():int
+    + bombEffect():int
 }
 EliteEnemyFactory ..> EliteEnemy
 AbstractEnemy <|-- EliteEnemy
 
 
+
 class MobEnemy {
-    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
-    + forward():void
-    + shoot():List<BaseBullet>
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp, ShootStrategy strategy, BulletFactory bulletFactory)
+    + spawnItems():List<BaseItem>
+    + getScores():int
+    + bombEffect():int
 }
 MobEnemyFactory ..> MobEnemy
 AbstractEnemy <|-- MobEnemy
+
+class SuperElite {
+    + SuperElite(int locationX, int locationY, int speedX, int speedY, int hp,ShootStrategy strategy, BulletFactory bulletFactory)
+    + getScores():int
+    + bombEffect():int
+}
+SuperEliteFactory ..> SuperElite
+AbstractEnemy <|-- SuperElite
+
+
+class BossEnemy {
+    - minX:int
+    - maxX:int
+    + BossEnemy(int locationX, int locationY, int speedX, int speedY, int hp,ShootStrategy strategy, BulletFactory bulletFactory)
+    + forward():void
+    + getScores():int
+    + bombEffect():int
+}
+BossFactory ..> BossEnemy
+AbstractEnemy <|-- BossEnemy
 @enduml

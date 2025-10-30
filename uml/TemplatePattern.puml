@@ -1,0 +1,76 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+
+abstract class Game
+{
+    # userName: String
+    # playSoundManager: PlaySoundManager
+    # background: BufferedImage
+    # backGroundTop: int
+    - executorService: ScheduledExecutorService
+    - timeInterval: int
+    # heroAircraft: HeroAircraft
+    # enemyAircrafts: List<AbstractEnemy>
+    # heroBullets: List<BaseBullet>
+    # enemyBullets: List<BaseBullet>
+    # droppedItems: List<BaseItem>
+    # score: int
+    # time: int
+    # lastBossScore: int
+    - cycleDuration: int
+    # cycleTime: int
+    # isBossExist: boolean
+    # enemyMaxNumber: int
+    # bossInterval: int
+    # eliteEnemyRate: double
+    # superEliteRate: double
+    # bossHp: int
+    # superEliteHp: int
+    # eliteHp: int
+    # mobHp: int
+    # gameLevel: int
+    - random: Random
+
+    + {abstract} Game(String musicMode, String userName)
+    + action(): void
+    # getEnemy(): AbstractEnemy
+    # increaseDifficulty(): void
+    # checkSkillDuration(): void
+    # checkForBossSpawn(): void
+    # timeCountAndNewCycleJudge(): boolean
+    # shootAction(): void
+    # bulletsMoveAction(): void
+    # aircraftsMoveAction(): void
+    # itemsMoveAction(): void
+    # crashCheckAction(): void
+    # postProcessAction(): void
+    + setBackground(BufferedImage image): void
+    + paint(Graphics g): void
+    # paintImageWithPositionRevised(Graphics g, List<? extends AbstractFlyingObject> objects): void
+    # paintScoreAndLife(Graphics g): void
+}
+
+class GameEasy
+{
+    + GameEasy(String musicMode, String userName)
+    + checkForBossSpawn(): void
+    + increaseDifficulty(): void
+}
+Game <|-- GameEasy
+
+class GameHard
+{
+    - bossCounter: int
+    + GameHard(String musicMode, String userName)
+    + checkForBossSpawn(): void
+}
+Game <|-- GameHard
+
+class GameNormal
+{
+    + GameNormal(String musicMode, String userName)
+}
+Game <|-- GameNormal
+@enduml

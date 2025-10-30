@@ -21,16 +21,6 @@ public class MobEnemy extends AbstractEnemy {
         this.itemAmount = 1;
     }
 
-    @Override
-    public void forward() {
-        super.forward();
-        // 判定 y 轴向下飞行出界
-        if (locationY >= Main.WINDOW_HEIGHT ) {
-            vanish();
-        }
-    }
-
-
 
     @Override
     public List<BaseItem> spawnItems() {return new LinkedList<>();}
