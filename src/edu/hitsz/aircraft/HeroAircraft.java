@@ -27,7 +27,7 @@ public class HeroAircraft extends AbstractAircraft {
                 Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight(),
                 0, 0, 100, new ShootStraight(), new HeroBulletFactory());
         this.shootInterval = 0;
-        this.power = 300;
+        this.power = 30;
         this.direction = -1;
 
     }

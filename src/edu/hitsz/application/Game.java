@@ -78,7 +78,7 @@ public abstract class Game extends JPanel {
         heroAircraft = HeroAircraft.getInstance();
         heroAircraft.init(Main.WINDOW_WIDTH / 2,
                 Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight(),
-                0, 0, 100000);//不关闭游戏而重新开始时，必须重新初始化否则会直接结束
+                0, 0, 100);//不关闭游戏而重新开始时，必须重新初始化否则会直接结束
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
